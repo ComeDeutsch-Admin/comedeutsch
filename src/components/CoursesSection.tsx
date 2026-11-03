@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import { COURSES_DATA } from '../data/coursesData';
 import { MessageCircle, RotateCw } from 'lucide-react';
 
+const STUDY_HOURS: Record<string, string> = {
+  A1: '96-120 小時',
+  A2: '96-150 小時',
+  B1: '144-200 小時',
+  B2: '300-500 小時',
+};
+
 interface CoursesSectionProps {
   onSelectCourseForLine: (courseId: string) => void;
 }
@@ -33,6 +40,8 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 perspective-1000">
           {COURSES_DATA.map((course) => {
             const isFlipped = flippedCards[course.id];
+            const level = course.title.slice(0, 2).toUpperCase();
+            const hours = STUDY_HOURS[level];
             
             return (
               <div
@@ -68,8 +77,15 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
                       </p>
                     </div>
                     <div className="mt-6">
-                       <span className="text-[13px] font-bold text-orange-600 bg-orange-50 px-3 py-1.5 rounded-full inline-block">點擊看課程細節</span>
-                    </div>
+                        {hours && (
+                          <p className="mb-3 text-sm text-neutral-600">
+                            <span className="font-bold text-neutral-900">學習時數：</span>
+                            {hours}
+                            <span className="text-neutral-400">（依個人學習進度調配）</span>
+                          </p>
+                        )}
+                        <span className="text-[13px] font-bold text-orange-600 bg-orange-50 px-3 py-1.5 rounded-full inline-block">點擊看課程細節</span>
+                      </div>
                   </div>
 
                   {/* Back Side */}
