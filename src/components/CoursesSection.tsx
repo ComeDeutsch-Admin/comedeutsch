@@ -42,7 +42,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
                 onClick={() => toggleFlip(course.id)}
               >
                 <div
-                  className={`absolute inset-0 w-full h-full transition-all duration-500 [transform-style:preserve-3d] ${
+                  className={`grid h-full w-full transition-all duration-500 [transform-style:preserve-3d] ${
                     isFlipped ? '[transform:rotateY(180deg)]' : ''
                   }`}
                 >
