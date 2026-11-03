@@ -73,7 +73,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
                   </div>
 
                   {/* Back Side */}
-                  <div className="absolute inset-0 w-full h-full bg-[#f4f4f4] text-neutral-900 rounded-2xl p-6 sm:p-8 shadow-md border border-neutral-200 flex flex-col [backface-visibility:hidden] [transform:rotateY(180deg)] overflow-hidden">
+                  <div className="[grid-area:1/1] bg-[#f4f4f4] text-neutral-900 rounded-2xl p-6 sm:p-8 shadow-md border border-neutral-200 flex flex-col [backface-visibility:hidden] [transform:rotateY(180deg)]">
                      <div className="flex items-start justify-between mb-4">
                         <h3 className="text-xl font-bold tracking-tight text-neutral-950">
                           課程重點
