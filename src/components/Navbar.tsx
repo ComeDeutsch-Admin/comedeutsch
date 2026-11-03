@@ -23,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLineModal }) => {
     { name: '師資介紹', href: '#teachers' },
     { name: '學員好評', href: '#reviews' },
     { name: '榮譽榜', href: '#honors' },
-    { name: '活動集錦', href: '#activities' },
+    // { name: '活動集錦', href: '#activities' },
     { name: '上課規定', href: '#rules' },
     { name: 'FAQ', href: '#faq' },
   ];
