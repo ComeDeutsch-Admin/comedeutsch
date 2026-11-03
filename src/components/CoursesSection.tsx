@@ -47,7 +47,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
                   }`}
                 >
                   {/* Front Side */}
-                  <div className="absolute inset-0 w-full h-full bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-neutral-300/80 flex flex-col justify-between hover:shadow-md transition-shadow duration-200 [backface-visibility:hidden]">
+                  <div className="[grid-area:1/1] bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-neutral-300/80 flex flex-col justify-between hover:shadow-md transition-shadow duration-200 [backface-visibility:hidden]">
                     <div>
                       {/* Title & Tagline matching Screenshot 4 */}
                       <div className="flex items-start justify-between">
