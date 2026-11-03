@@ -4,32 +4,32 @@ import { Award, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
 const honorsList = [
   {
     student: 'N 同學',
-    achievement: 'Goethe-Zertifikat A2一次高分通過',
+    achievement: 'Goethe-Zertifikat A2 一次高分通過',
     goal: '三個月從零開始快速通過',
   },
   {
     student: 'A 同學',
-    achievement: 'Goethe-Zertifikat A1、A2一次高分通過',
+    achievement: 'Goethe-Zertifikat A1、A2 一次高分通過',
     goal: '遠赴德國參加語言班',
   },
   {
     student: 'L 同學',
-    achievement: 'Goethe-Zertifikat A1、A2一次高分通過',
+    achievement: 'Goethe-Zertifikat A1、A2 一次高分通過',
     goal: '前往德國慕尼黑近郊擔任互惠生 (Aupair)',
   },
   {
     student: 'S 同學',
-    achievement: 'Goethe-Zertifikat A2一次高分通過',
+    achievement: 'Goethe-Zertifikat A2 一次高分通過',
     goal: '申請德國音樂院碩士',
   },
   {
     student: 'Z 同學',
-    achievement: 'Goethe-Zertifikat A2一次高分通過',
+    achievement: 'Goethe-Zertifikat A2 一次高分通過',
     goal: '申請德國音樂院碩士',
   },
   {
     student: 'M 同學',
-    achievement: 'Goethe-Zertifikat A2一次高分通過',
+    achievement: 'Goethe-Zertifikat A2 一次高分通過',
     goal: '申請德國音樂院碩士',
   },
   {
@@ -39,12 +39,12 @@ const honorsList = [
   },
   {
     student: 'S 同學',
-    achievement: 'Goethe-Zertifikat A2一次高分通過、B1高分',
+    achievement: 'Goethe-Zertifikat A2 一次高分通過、B1 高分',
     goal: '一年達標B1｜前往德國音樂院就讀最高演奏文憑',
   },
   {
     student: 'N 同學',
-    achievement: '高分通過奧地利B2同等考試',
+    achievement: '高分通過奧地利 B2 同等考試',
     goal: '高分 sehr gut｜留奧地利音樂院碩士',
   },
   {
@@ -54,12 +54,12 @@ const honorsList = [
   },
   {
     student: 'Y 同學',
-    achievement: 'Goethe-Zertifikat B2高分',
-    goal: '一個月從A2達標B2｜申請德國音樂院學士',
+    achievement: 'Goethe-Zertifikat B2 高分',
+    goal: '一個月從 A2 達標 B2｜申請德國音樂院學士',
   },
   {
     student: 'O 同學',
-    achievement: 'Goethe-Zertifikat B1高分通過',
+    achievement: 'Goethe-Zertifikat B1 高分通過',
     goal: '遠赴德國參加語言班',
   },
 ];
