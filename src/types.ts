@@ -35,8 +35,9 @@ export interface StudentReview {
 export interface Teacher {
   name: string;
   title: string;
+  group: string;           
   credentials: string[];
-  intro: string;
+  teachingStyle: string[];
   avatarText: string;
   avatarUrl: string;
   accentColor: string;
