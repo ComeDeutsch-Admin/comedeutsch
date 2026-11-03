@@ -1,4 +1,4 @@
-｀import { AdvantageTab } from '../types';
+import { AdvantageTab } from '../types';
 
 export const ADVANTAGES_DATA: AdvantageTab[] = [
   {
