@@ -60,7 +60,7 @@ export const Footer: React.FC<FooterProps> = () => {
           <p id="footer-copyright" className="text-center">
             © Copyright 2026 All rights Reserved.
             <br className="sm:hidden" />{' '}
-            Designed by ComeDeutsch 康德德語股份有限公司 12345678
+            Designed by ComeDeutsch
           </p>
         </div>
       </div>
