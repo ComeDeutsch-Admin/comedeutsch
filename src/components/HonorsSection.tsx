@@ -40,7 +40,7 @@ const honorsList = [
   {
     student: 'S 同學',
     achievement: 'Goethe-Zertifikat A2一次高分通過、B1高分',
-    goal: '一年達標B1｜前往德國音樂院就最高演奏文憑',
+    goal: '一年達標B1｜前往德國音樂院就讀最高演奏文憑',
   },
   {
     student: 'N 同學',
