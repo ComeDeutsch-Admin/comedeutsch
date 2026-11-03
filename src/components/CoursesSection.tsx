@@ -38,7 +38,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
               <div
                 key={course.id}
                 id={`course-card-${course.id}`}
-                className="relative h-[370px] sm:h-[340px] w-full rounded-2xl cursor-pointer group [perspective:1000px]"
+                className="relative w-full rounded-2xl cursor-pointer group [perspective:1000px]"
                 onClick={() => toggleFlip(course.id)}
               >
                 <div
