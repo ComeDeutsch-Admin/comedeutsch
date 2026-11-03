@@ -1,4 +1,4 @@
-import { AdvantageTab } from '../types';
+｀import { AdvantageTab } from '../types';
 
 export const ADVANTAGES_DATA: AdvantageTab[] = [
   {
@@ -17,8 +17,8 @@ export const ADVANTAGES_DATA: AdvantageTab[] = [
     title: '複習單字卡',
     shortDesc: '告別死背，利用科學間隔重複法讓單字內化入腦',
     bulletPoints: [
-      '每週堂課依據進度精選重點生詞，製作專屬 Quizlet 數位單字卡',
-      '每張單字卡標註詞性、德文名詞性別 (der/die/das)、複數型態及真實情境例句',
+      '依據主題精選重點生詞，製作專屬 Quizlet 數位單字卡',
+      '單字卡標註詞性、德文名詞性別 (der/die/das)、複數型態、動詞變化',
       '附上母語人士標準德式發音，零碎時間隨時練習，複習效率提高 300%',
     ],
     iconName: 'Layers',
