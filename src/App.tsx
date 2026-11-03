@@ -11,7 +11,9 @@ import { RulesSection } from './components/RulesSection';
 import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
 
-export default function App() {
+const SHOW_ACTIVITIES = false; // 之後要顯示活動集錦,改成 true 即可
+
+export default function App() {  
   const handleOpenLineModal = (courseId: string = 'a1') => {
     window.open('https://lin.ee/nPiDcoo', '_blank');
   };
@@ -45,7 +47,7 @@ export default function App() {
         <HonorsSection />
 
         {/* 8. 活動集錦 */}
-        <ActivitiesSection />
+        {SHOW_ACTIVITIES && <ActivitiesSection />}
 
         {/* 9. 上課規定 */}
         <RulesSection />
