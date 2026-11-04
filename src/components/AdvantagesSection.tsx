@@ -31,7 +31,7 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
   return (
     <section id="advantages" className="py-20 sm:py-24 bg-[#fff9eb] border-y border-[#fce9c9]/70">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header matching Screenshot 2 */}
+
         <div className="text-center max-w-3xl mx-auto">
           <h2
             id="advantages-title"
@@ -49,7 +49,7 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
           </p>
         </div>
 
-        {/* Tab Navigation matching Screenshot 2 */}
+
         <div className="mt-12 overflow-x-auto pb-1 scrollbar-none">
           <div className="flex justify-start md:justify-center border-b border-neutral-300 min-w-max">
             {ADVANTAGES_DATA.map((tab) => {
@@ -70,7 +70,7 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
                   </span>
                   <span>{tab.title}</span>
 
-                  {/* Active Underline matching Screenshot 2 */}
+
                   {isActive && (
                     <span className="absolute bottom-0 left-0 right-0 h-0.75 bg-neutral-950 rounded-full"></span>
                   )}
@@ -80,7 +80,7 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
           </div>
         </div>
 
-        {/* Tab Content matching Screenshot 2 */}
+
         <div className="mt-10 bg-white rounded-2xl p-6 sm:p-10 shadow-xs border border-neutral-200/90 transition-all duration-200 max-w-3xl mx-auto">
           <div className="space-y-6">
             <div>
@@ -94,7 +94,7 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
               </h4>
             </div>
 
-            {/* Bullet Points from Screenshot 2 */}
+
             <ul className="space-y-3.5 text-neutral-700 text-base">
               {activeTab.bulletPoints.map((point, index) => (
                 <li key={index} className="flex items-start gap-3">
