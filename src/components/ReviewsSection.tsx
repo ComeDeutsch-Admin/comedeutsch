@@ -13,10 +13,15 @@ const IG_POST_URLS = [
 // 要裁掉的底部高度（px）：愛心／留言列 + 「新增留言」列
 // 還看得到殘影就加大；「到 Instagram 查看更多內容」被切到就調小
 const FOOTER_CROP = 90;
+
+// 蓋住「到 Instagram 查看更多內容」下方那條分隔線的白色遮罩高度（px）
+// 還看得到線就加大；文字被蓋到就調小
+const DIVIDER_MASK = 10;
 // ================================================================
 
+// 拿掉 Instagram 自帶的邊框、陰影、外距，外框改由 IgCard 自己畫
 const buildEmbed = (url: string) =>
-  `<blockquote class="instagram-media" data-instgrm-permalink="${url}?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin:1px; max-width:540px; min-width:326px; padding:0; width:calc(100% - 2px);"></blockquote>`;
+  `<blockquote class="instagram-media" data-instgrm-permalink="${url}?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:0; box-shadow:none; margin:0; max-width:100%; min-width:0; padding:0; width:100%;"></blockquote>`;
 
 declare global {
   interface Window {
@@ -61,11 +66,27 @@ const ArrowButton: React.FC<{
 // 單張貼文卡片：memo 避免重新渲染時 Instagram 的 iframe 被重置
 const IgCard = React.memo(({ html }: { html: string }) => (
   <div className="shrink-0 snap-start w-[calc(100vw-2rem)] sm:w-[380px]">
-    {/* 裁切容器：把 Instagram 底部的互動列藏起來 */}
-    <div className="overflow-hidden">
+    {/* 自己畫的完整外框：四邊都有邊線＋圓角，看起來是一張完整的卡片 */}
+    <div className="relative overflow-hidden rounded-xl border border-neutral-200 bg-white">
+      {/* 裁切容器：把 Instagram 底部的互動列藏起來 */}
+      <div className="overflow-hidden">
+        <div
+          // 負的 margin 把 Instagram 內建的 1px 邊線推到外框外面，避免雙層邊線
+          style={{
+            marginTop: -1,
+            marginLeft: -1,
+            marginRight: -1,
+            marginBottom: -FOOTER_CROP,
+          }}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      </div>
+
+      {/* 白色遮罩：蓋住底部那條會讓左右邊框「斷掉」的分隔線 */}
       <div
-        style={{ marginBottom: -FOOTER_CROP }}
-        dangerouslySetInnerHTML={{ __html: html }}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 bg-white"
+        style={{ height: DIVIDER_MASK }}
       />
     </div>
   </div>
