@@ -137,8 +137,8 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
             <div>
               {/* 手機：「特色解析」獨立一行、說明文字在下方；桌面：維持單行膠囊 */}
               <div className="inline-flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 px-3 py-1.5 sm:py-1 rounded-2xl sm:rounded-full bg-neutral-100 text-neutral-800 text-xs font-semibold mb-2">
-                <span className="shrink-0 whitespace-nowrap">特色解析</span>
-                <span className="hidden sm:inline" aria-hidden="true">•</span>
+                {/* <span className="shrink-0 whitespace-nowrap">特色解析</span> */}
+                {/* <span className="hidden sm:inline" aria-hidden="true">•</span> */}
                 <span className="leading-snug">{activeTab.shortDesc}</span>
               </div>
               <h4 className="text-2xl sm:text-3xl font-bold text-neutral-900">
