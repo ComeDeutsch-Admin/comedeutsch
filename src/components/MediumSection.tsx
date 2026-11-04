@@ -10,11 +10,6 @@ const MEDIUM_PROFILE_URL = `https://medium.com/@${MEDIUM_USERNAME}`;
 const FEED_URL = `https://medium.com/feed/@${MEDIUM_USERNAME}`;
 const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(FEED_URL)}`;
 
-// 古典優雅的襯線字體：英文用 Cormorant Garamond，中文用思源宋體
-const FONT_IMPORT =
-  "@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Serif+TC:wght@300;400&display=swap');";
-const CLASSIC_FONT = "'Cormorant Garamond', 'Noto Serif TC', 'Songti TC', serif";
-
 // 卡片寬度：手機 1 張（露出下一張一點點）、平板 2 張、桌機 3 張
 const CARD_WIDTH =
   'shrink-0 snap-start w-[85%] sm:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-4rem)/3)]';
@@ -213,14 +208,11 @@ export const MediumSection: React.FC = () => {
       aria-labelledby="articles-heading"
       className="py-20 sm:py-24 bg-white border-b border-neutral-200"
     >
-      <style>{FONT_IMPORT}</style>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-10">
           <h2
             id="articles-heading"
-            className="text-3xl sm:text-5xl md:text-6xl font-light text-neutral-950 tracking-wide"
-            style={{ fontFamily: CLASSIC_FONT }}
+            className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 tracking-tight"
           >
             ComeDeutsch專欄
           </h2>
