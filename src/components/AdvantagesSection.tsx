@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ADVANTAGES_DATA } from '../data/advantagesData';
 import { GraduationCap, Layers, Sparkles, PhoneCall, ReceiptText, MessageCircle, CheckCircle } from 'lucide-react';
 
@@ -8,6 +8,35 @@ interface AdvantagesSectionProps {
 
 export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLineModal }) => {
   const [activeTabId, setActiveTabId] = useState(ADVANTAGES_DATA[0].id);
+
+  // 捲動提示：判斷左右兩側是否還有被隱藏的分頁
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollHints = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft < maxScroll - 4);
+  }, []);
+
+  useEffect(() => {
+    updateScrollHints();
+    window.addEventListener('resize', updateScrollHints);
+    return () => window.removeEventListener('resize', updateScrollHints);
+  }, [updateScrollHints]);
+
+  const handleTabClick = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
+    setActiveTabId(id);
+    // 點選後把該分頁捲到中間，左右鄰近分頁露出來，暗示可以繼續滑
+    e.currentTarget.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
+  };
 
   const activeTab = ADVANTAGES_DATA.find((tab) => tab.id === activeTabId) || ADVANTAGES_DATA[0];
 
@@ -31,7 +60,7 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
   return (
     <section id="advantages" className="py-20 sm:py-24 bg-[#fff9eb] border-y border-[#fce9c9]/70">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
+        {/* Section Header matching Screenshot 2 */}
         <div className="text-center max-w-3xl mx-auto">
           <h2
             id="advantages-title"
@@ -49,38 +78,60 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
           </p>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="relative mt-12">
+          <div
+            ref={scrollRef}
+            onScroll={updateScrollHints}
+            className="overflow-x-auto pb-1 scrollbar-none"
+          >
+            <div className="flex justify-start md:justify-center border-b border-neutral-300 min-w-max">
+              {ADVANTAGES_DATA.map((tab) => {
+                const isActive = tab.id === activeTabId;
+                return (
+                  <button
+                    key={tab.id}
+                    id={`tab-${tab.id}`}
+                    onClick={(e) => handleTabClick(tab.id, e)}
+                    className={`relative py-3.5 px-4 sm:px-6 text-sm sm:text-base font-semibold transition-colors duration-150 cursor-pointer flex items-center gap-2 ${
+                      isActive
+                        ? 'text-neutral-950 font-bold'
+                        : 'text-neutral-500 hover:text-neutral-800'
+                    }`}
+                  >
+                    <span className={`${isActive ? 'text-neutral-900' : 'text-neutral-400'}`}>
+                      {getIcon(tab.iconName)}
+                    </span>
+                    <span>{tab.title}</span>
 
-        <div className="mt-12 overflow-x-auto pb-1 scrollbar-none">
-          <div className="flex justify-start md:justify-center border-b border-neutral-300 min-w-max">
-            {ADVANTAGES_DATA.map((tab) => {
-              const isActive = tab.id === activeTabId;
-              return (
-                <button
-                  key={tab.id}
-                  id={`tab-${tab.id}`}
-                  onClick={() => setActiveTabId(tab.id)}
-                  className={`relative py-3.5 px-4 sm:px-6 text-sm sm:text-base font-semibold transition-colors duration-150 cursor-pointer flex items-center gap-2 ${
-                    isActive
-                      ? 'text-neutral-950 font-bold'
-                      : 'text-neutral-500 hover:text-neutral-800'
-                  }`}
-                >
-                  <span className={`${isActive ? 'text-neutral-900' : 'text-neutral-400'}`}>
-                    {getIcon(tab.iconName)}
-                  </span>
-                  <span>{tab.title}</span>
-
-
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.75 bg-neutral-950 rounded-full"></span>
-                  )}
-                </button>
-              );
-            })}
+                    {/* Active Underline */}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.75 bg-neutral-950 rounded-full"></span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
+
+          {/* 左側漸層：左邊還有內容時顯示（顏色需與 section 背景 #fff9eb 一致） */}
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute left-0 top-0 bottom-1 w-12 bg-gradient-to-r from-[#fff9eb] to-transparent transition-opacity duration-200 md:hidden ${
+              canScrollLeft ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+
+          {/* 右側漸層：右邊還有內容時顯示 */}
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute right-0 top-0 bottom-1 w-14 bg-gradient-to-l from-[#fff9eb] to-transparent transition-opacity duration-200 md:hidden ${
+              canScrollRight ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
         </div>
 
-
+        {/* Tab Content */}
         <div className="mt-10 bg-white rounded-2xl p-6 sm:p-10 shadow-xs border border-neutral-200/90 transition-all duration-200 max-w-3xl mx-auto">
           <div className="space-y-6">
             <div>
@@ -93,7 +144,6 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
                 {activeTab.title}
               </h4>
             </div>
-
 
             <ul className="space-y-3.5 text-neutral-700 text-base">
               {activeTab.bulletPoints.map((point, index) => (
