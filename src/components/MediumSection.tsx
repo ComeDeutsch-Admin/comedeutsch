@@ -22,6 +22,7 @@ const GAP_PX = 32; // 對應 gap-8
 
 interface MediumPost {
   title: string;
+  subtitle: string;
   link: string;
   date: string;
   image: string | null;
@@ -37,6 +38,15 @@ interface Rss2JsonItem {
   content?: string;
 }
 
+// Medium 頁面會把「外文標題」和「中文副標」分成兩行；RSS 只給一整串，
+// 所以這裡在第一個「空白＋中文」的地方切開（標題開頭就是中文則不切）
+const splitTitle = (raw: string): { title: string; subtitle: string } => {
+  const t = raw.trim();
+  const m = t.match(/^(.*?\S)\s+([\u3400-\u9fff\uff00-\uffef].*)$/);
+  if (m && !/[\u3400-\u9fff]/.test(m[1])) return { title: m[1], subtitle: m[2] };
+  return { title: t, subtitle: '' };
+};
+
 const parseItem = (item: Rss2JsonItem): MediumPost => {
   const html = item.content || item.description || '';
   const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -44,12 +54,21 @@ const parseItem = (item: Rss2JsonItem): MediumPost => {
   // 封面圖：優先用 thumbnail，沒有就抓文章內第一張圖
   const image = item.thumbnail || doc.querySelector('img')?.getAttribute('src') || null;
 
-  // 摘要：取第一段文字，最多 90 字
-  const text = (doc.querySelector('p')?.textContent || doc.body.textContent || '').trim();
-  const excerpt = text.length > 90 ? `${text.slice(0, 90)}…` : text;
+  // 摘要：跳過「親愛的德語玩家：」這類太短或以冒號結尾的開場白，取第一段正式內容
+  const paragraphs = Array.from(doc.querySelectorAll('p'))
+    .map((p) => (p.textContent || '').trim())
+    .filter(Boolean);
+  const text =
+    paragraphs.find((t) => t.length >= 20 && !/[:：]$/.test(t)) ||
+    paragraphs[0] ||
+    (doc.body.textContent || '').trim();
+  const excerpt = text.length > 100 ? `${text.slice(0, 100)}…` : text;
+
+  const { title, subtitle } = splitTitle(item.title);
 
   return {
-    title: item.title,
+    title,
+    subtitle,
     link: item.link.split('?')[0], // 去掉 ?source=rss 追蹤參數
     date: new Date(item.pubDate.replace(' ', 'T') + 'Z').toLocaleDateString('zh-TW', {
       year: 'numeric',
@@ -97,8 +116,13 @@ const PostCard: React.FC<{ post: MediumPost }> = ({ post }) => (
           {post.title}
         </a>
       </h3>
+      {post.subtitle && (
+        <p className="mt-1 text-lg italic text-neutral-800 leading-snug">{post.subtitle}</p>
+      )}
       {post.excerpt && (
-        <p className="mt-2 text-sm text-neutral-600 leading-relaxed">{post.excerpt}</p>
+        <p className="mt-2 text-sm italic text-neutral-500 leading-relaxed line-clamp-3">
+          {post.excerpt}
+        </p>
       )}
     </div>
   </article>
@@ -195,7 +219,7 @@ export const MediumSection: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-10">
           <h2
             id="articles-heading"
-            className="text-4xl sm:text-5xl md:text-6xl font-light text-neutral-950 tracking-wide"
+            className="text-3xl sm:text-5xl md:text-6xl font-light text-neutral-950 tracking-wide"
             style={{ fontFamily: CLASSIC_FONT }}
           >
             ComeDeutsch專欄
