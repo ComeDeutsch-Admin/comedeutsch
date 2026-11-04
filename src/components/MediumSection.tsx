@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // ===== 只需要改這裡 =====
 const MEDIUM_USERNAME = 'ComeDeutsch'; // 不用加 @，例如 comedeutsch
-const MAX_POSTS = 3; // 最多顯示幾篇
-const PROFILE_NAME = 'comedeutsch'; // 卡片左上角顯示的名稱
-const PROFILE_AVATAR = '/logo.jpg'; // 頭像圖片路徑，換成你網站上的 logo
+const MAX_POSTS = 9; // 最多載入幾篇（rss2json 免費版最多 10 篇）
 // ========================
 
 const MEDIUM_PROFILE_URL = `https://medium.com/@${MEDIUM_USERNAME}`;
 // 如果你的 Medium 是 publication（不是個人帳號），改成 `https://medium.com/feed/publication-name`
 const FEED_URL = `https://medium.com/feed/@${MEDIUM_USERNAME}`;
 const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(FEED_URL)}`;
+
+// 古典優雅的襯線字體：英文用 Cormorant Garamond，中文用思源宋體
+const FONT_IMPORT =
+  "@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Serif+TC:wght@300;400&display=swap');";
+const CLASSIC_FONT = "'Cormorant Garamond', 'Noto Serif TC', 'Songti TC', serif";
+
+// 卡片寬度：手機 1 張（露出下一張一點點）、平板 2 張、桌機 3 張
+const CARD_WIDTH =
+  'shrink-0 snap-start w-[85%] sm:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-4rem)/3)]';
+const GAP_PX = 32; // 對應 gap-8
 
 interface MediumPost {
   title: string;
@@ -54,21 +62,10 @@ const parseItem = (item: Rss2JsonItem): MediumPost => {
 };
 
 const PostCard: React.FC<{ post: MediumPost }> = ({ post }) => (
-  <article className="w-full max-w-[380px] bg-white border border-neutral-200 rounded-sm overflow-hidden flex flex-col">
-    {/* 頂部：頭像 + 名稱（類似 IG 貼文的 header） */}
-    <div className="flex items-center gap-3 px-4 py-3">
-      <img
-        src={PROFILE_AVATAR}
-        alt=""
-        className="w-10 h-10 rounded-full object-cover border border-neutral-200"
-      />
-      <div className="leading-tight">
-        <p className="text-sm font-semibold text-neutral-950">{PROFILE_NAME}</p>
-        <p className="text-xs text-neutral-500">{post.date}</p>
-      </div>
-    </div>
-
-    {/* 封面圖 */}
+  <article
+    className={`${CARD_WIDTH} bg-white border border-neutral-200 rounded-sm overflow-hidden flex flex-col`}
+  >
+    {/* 封面圖（整張可點） */}
     <a
       href={post.link}
       target="_blank"
@@ -87,8 +84,9 @@ const PostCard: React.FC<{ post: MediumPost }> = ({ post }) => (
       )}
     </a>
 
-    {/* 標題 + 摘要 */}
-    <div className="px-4 pt-4 pb-3 flex-1">
+    {/* 日期 + 標題 + 摘要 */}
+    <div className="px-4 pt-4 pb-5 flex-1">
+      <p className="text-xs text-neutral-500 mb-2">{post.date}</p>
       <h3 className="text-lg font-bold text-neutral-950 leading-snug">
         <a
           href={post.link}
@@ -103,32 +101,16 @@ const PostCard: React.FC<{ post: MediumPost }> = ({ post }) => (
         <p className="mt-2 text-sm text-neutral-600 leading-relaxed">{post.excerpt}</p>
       )}
     </div>
-
-    {/* 底部連結 */}
-    <div className="border-t border-neutral-200 px-4 py-3">
-      <a
-        href={post.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-sm font-semibold text-indigo-600 hover:text-indigo-700"
-      >
-        到 Medium 閱讀全文
-      </a>
-    </div>
   </article>
 );
 
 const SkeletonCard: React.FC = () => (
-  <div className="w-full max-w-[380px] bg-white border border-neutral-200 rounded-sm overflow-hidden animate-pulse">
-    <div className="flex items-center gap-3 px-4 py-3">
-      <div className="w-10 h-10 rounded-full bg-neutral-100" />
-      <div className="space-y-2">
-        <div className="h-3 w-24 bg-neutral-100 rounded" />
-        <div className="h-3 w-16 bg-neutral-100 rounded" />
-      </div>
-    </div>
+  <div
+    className={`${CARD_WIDTH} bg-white border border-neutral-200 rounded-sm overflow-hidden animate-pulse`}
+  >
     <div className="aspect-[4/3] bg-neutral-100" />
     <div className="p-4 space-y-3">
+      <div className="h-3 w-20 bg-neutral-100 rounded" />
       <div className="h-4 w-3/4 bg-neutral-100 rounded" />
       <div className="h-3 w-full bg-neutral-100 rounded" />
       <div className="h-3 w-2/3 bg-neutral-100 rounded" />
@@ -136,9 +118,36 @@ const SkeletonCard: React.FC = () => (
   </div>
 );
 
+const ArrowButton: React.FC<{
+  direction: 'prev' | 'next';
+  onClick: () => void;
+}> = ({ direction, onClick }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-label={direction === 'prev' ? '上一篇' : '下一篇'}
+    className="w-10 h-10 rounded-full border border-neutral-300 text-neutral-950 flex items-center justify-center transition-colors hover:bg-neutral-950 hover:text-white hover:border-neutral-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-950"
+  >
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {direction === 'prev' ? <polyline points="15 18 9 12 15 6" /> : <polyline points="9 18 15 12 9 6" />}
+    </svg>
+  </button>
+);
+
 export const MediumSection: React.FC = () => {
   const [posts, setPosts] = useState<MediumPost[] | null>(null);
   const [failed, setFailed] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -159,25 +168,55 @@ export const MediumSection: React.FC = () => {
     };
   }, []);
 
+  // 每按一次翻一張卡片；到最後一張再按「下一篇」會回到第一張，反之亦然
+  const flip = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.firstElementChild as HTMLElement | null;
+    const step = card ? card.offsetWidth + GAP_PX : el.clientWidth;
+    const max = el.scrollWidth - el.clientWidth;
+
+    let target = el.scrollLeft + dir * step;
+    if (dir === 1 && el.scrollLeft >= max - 4) target = 0;
+    else if (dir === -1 && el.scrollLeft <= 4) target = max;
+
+    el.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
+  };
+
   return (
     <section
       id="articles"
       aria-labelledby="articles-heading"
       className="py-20 sm:py-24 bg-white border-b border-neutral-200"
     >
+      <style>{FONT_IMPORT}</style>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-10">
           <h2
             id="articles-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 tracking-tight"
+            className="text-4xl sm:text-5xl md:text-6xl font-light text-neutral-950 tracking-wide"
+            style={{ fontFamily: CLASSIC_FONT }}
           >
             ComeDeutsch專欄
           </h2>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-8">
+        {/* 右上角：翻頁箭頭 */}
+        {!failed && (
+          <div className="flex justify-end gap-3 mb-4">
+            <ArrowButton direction="prev" onClick={() => flip(-1)} />
+            <ArrowButton direction="next" onClick={() => flip(1)} />
+          </div>
+        )}
+
+        <div
+          ref={trackRef}
+          className="flex gap-8 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden"
+          style={{ scrollbarWidth: 'none' }}
+        >
           {posts === null && !failed &&
-            Array.from({ length: MAX_POSTS }).map((_, i) => <SkeletonCard key={i} />)}
+            Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
 
           {posts?.map((post) => <PostCard key={post.link} post={post} />)}
         </div>
@@ -193,19 +232,6 @@ export const MediumSection: React.FC = () => {
               className="font-semibold text-indigo-600 hover:text-indigo-700"
             >
               直接到 Medium 閱讀
-            </a>
-          </p>
-        )}
-
-        {posts && posts.length > 0 && (
-          <p className="mt-10 text-center">
-            <a
-              href={MEDIUM_PROFILE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-semibold text-indigo-600 hover:text-indigo-700"
-            >
-              到 Medium 查看更多文章
             </a>
           </p>
         )}
