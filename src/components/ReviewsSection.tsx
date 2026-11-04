@@ -1,13 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 interface ReviewsSectionProps {
   onOpenLineModal?: () => void;
 }
 
-// ⬇️ 這裡原本的 IG_POSTS 陣列原樣保留 ⬇️
-const IG_POSTS: string[] = [
-  /* ...你原本的兩則 Instagram embed HTML... */
+// ===== 要新增評價貼文，只要在這裡加一行 Instagram 貼文網址 =====
+const IG_POST_URLS = [
+  'https://www.instagram.com/p/DL9tdOfzESJ/',
+  'https://www.instagram.com/p/DL-EUQOTOKr/',
 ];
+
+// 要裁掉的底部高度（px）：愛心／留言列 + 「新增留言」列
+// 還看得到殘影就加大；「到 Instagram 查看更多內容」被切到就調小
+const FOOTER_CROP = 90;
+// ================================================================
+
+const buildEmbed = (url: string) =>
+  `<blockquote class="instagram-media" data-instgrm-permalink="${url}?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin:1px; max-width:540px; min-width:326px; padding:0; width:calc(100% - 2px);"></blockquote>`;
 
 declare global {
   interface Window {
@@ -18,12 +27,6 @@ declare global {
     };
   }
 }
-
-// ===== 可調整 =====
-// 要裁掉的底部高度（px）：愛心／留言列 + 「新增留言」列。
-// 如果還看得到一點點殘影就加大；如果「到 Instagram 查看更多內容」被切到就調小。
-const FOOTER_CROP = 84;
-// ==================
 
 const ArrowButton: React.FC<{
   direction: 'prev' | 'next';
@@ -55,25 +58,41 @@ const ArrowButton: React.FC<{
   </button>
 );
 
+// 單張貼文卡片：memo 避免重新渲染時 Instagram 的 iframe 被重置
+const IgCard = React.memo(({ html }: { html: string }) => (
+  <div className="shrink-0 snap-start w-[calc(100vw-2rem)] sm:w-[380px]">
+    {/* 裁切容器：把 Instagram 底部的互動列藏起來 */}
+    <div className="overflow-hidden">
+      <div
+        style={{ marginBottom: -FOOTER_CROP }}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </div>
+  </div>
+));
+
 export const ReviewsSection: React.FC<ReviewsSectionProps> = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScroll, setCanScroll] = useState(false);
+  const posts = useMemo(() => IG_POST_URLS.map(buildEmbed), []);
 
-  // 載入 / 重新處理 Instagram embed
+  // 載入 Instagram embed.js 並處理貼文
   useEffect(() => {
     if (window.instgrm) {
       window.instgrm.Embeds.process();
-    } else {
-      const script = document.createElement('script');
+      return;
+    }
+    let script = document.getElementById('instagram-embed-js') as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = 'instagram-embed-js';
       script.async = true;
-      script.src = '//www.instagram.com/embed.js';
-      script.onload = () => {
-        if (window.instgrm) {
-          window.instgrm.Embeds.process();
-        }
-      };
+      script.src = 'https://www.instagram.com/embed.js';
       document.body.appendChild(script);
     }
+    const onLoad = () => window.instgrm?.Embeds.process();
+    script.addEventListener('load', onLoad);
+    return () => script?.removeEventListener('load', onLoad);
   }, []);
 
   // 內容放不下（需要捲動）時才顯示箭頭
@@ -84,6 +103,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = () => {
     check();
     const ro = new ResizeObserver(check);
     ro.observe(el);
+    if (el.firstElementChild) ro.observe(el.firstElementChild);
     window.addEventListener('resize', check);
     return () => {
       ro.disconnect();
@@ -95,8 +115,9 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = () => {
   const flip = (dir: 1 | -1) => {
     const el = trackRef.current;
     if (!el) return;
-    const first = el.children[0] as HTMLElement | undefined;
-    const second = el.children[1] as HTMLElement | undefined;
+    const row = el.firstElementChild as HTMLElement | null;
+    const first = row?.children[0] as HTMLElement | undefined;
+    const second = row?.children[1] as HTMLElement | undefined;
     const step =
       first && second ? second.offsetLeft - first.offsetLeft : el.clientWidth;
     const max = el.scrollWidth - el.clientWidth;
@@ -120,32 +141,24 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = () => {
           </h2>
         </div>
 
-        {/* 右上角：翻頁箭頭（只有需要捲動時才出現） */}
+        {/* 右上角：翻頁箭頭（只有需要捲動時才出現，但一直佔位避免版面跳動） */}
         <div className={`flex justify-end gap-3 mb-4 h-10 ${canScroll ? '' : 'invisible'}`}>
           <ArrowButton direction="prev" onClick={() => flip(-1)} />
           <ArrowButton direction="next" onClick={() => flip(1)} />
         </div>
 
+        {/* 捲動軌道 */}
         <div
           ref={trackRef}
-          className="flex gap-4 sm:gap-8 overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
+          className="overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden"
           style={{ scrollbarWidth: 'none' }}
         >
-          {IG_POSTS.map((htmlString, index) => (
-            // first:ml-auto / last:mr-auto：放得下時自動置中，放不下時正常捲動
-            <div
-              key={index}
-              className="shrink-0 snap-start w-[92%] sm:w-[380px] first:ml-auto last:mr-auto"
-            >
-              {/* 裁切容器：把 Instagram 底部的互動列藏起來 */}
-              <div className="overflow-hidden border-b border-neutral-200">
-                <div
-                  style={{ marginBottom: -FOOTER_CROP }}
-                  dangerouslySetInnerHTML={{ __html: htmlString }}
-                />
-              </div>
-            </div>
-          ))}
+          {/* w-max mx-auto：放得下就置中，放不下就從左邊開始捲動 */}
+          <div className="flex gap-4 sm:gap-8 w-max mx-auto">
+            {posts.map((html, i) => (
+              <IgCard key={IG_POST_URLS[i]} html={html} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
