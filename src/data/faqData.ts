@@ -28,7 +28,7 @@ export const FAQ_DATA: FaqItem[] = [
   },
   {
     question: '請問你們都使用什麼教材呀？',
-    answer: 'A1-B1程度使用 Momente 系列（大學德語系使用之教材）。B2以上使用 Aspekte（歌德學院使用之教材）。若是您有特殊需求也可以在諮詢時提出，我們可以為您量身打造。',
+    answer: 'A1-B1程度使用 Momente 系列（大學德語系使用之教材）。B2以上使用 Aspekte（歌德學院使用之教材）。若您有特殊需求也可以在諮詢時提出，我們可以為您量身打造。',
     category: 'course',
   },
   {
