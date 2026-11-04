@@ -30,7 +30,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
         <div className="mb-14">
           <h2
             id="courses-heading"
-            className="text-[32px] leading-[32px] sm:text-[42px] sm:leading-[42px] md:text-[55px] md:leading-[55px] font-black text-neutral-950 tracking-tight"
+            className="text-[32px] leading-[32px] sm:text-[42px] sm:leading-[42px] md:text-[55px] md:leading-[55px] font-extrabold text-neutral-950 tracking-tight"
           >
             程度介紹
           </h2>
@@ -60,7 +60,7 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({ onSelectCourseFo
                     <div>
                       {/* Title & Tagline matching Screenshot 4 */}
                       <div className="flex items-start justify-between">
-                        <h3 className="text-xl sm:text-2xl font-black text-neutral-950 tracking-tight">
+                        <h3 className="text-xl sm:text-2xl font-extrabold text-neutral-950 tracking-tight">
                           {course.title} <span className="font-normal text-neutral-400">|</span>{' '}
                           <span className="text-base sm:text-lg font-bold text-neutral-700">
                             {course.tagline}

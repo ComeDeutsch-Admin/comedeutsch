@@ -40,7 +40,7 @@ export const WhyLearnGerman: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2
             id="why-learn-german-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 tracking-tight"
           >
             為什麼要學習德語？
           </h2>

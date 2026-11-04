@@ -19,7 +19,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenLineModal }) => {
         <div className="text-center mb-14">
           <h2
             id="faq-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 tracking-tight"
           >
             常見問題
           </h2>

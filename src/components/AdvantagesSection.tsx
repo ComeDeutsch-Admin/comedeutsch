@@ -35,7 +35,7 @@ export const AdvantagesSection: React.FC<AdvantagesSectionProps> = ({ onOpenLine
         <div className="text-center max-w-3xl mx-auto">
           <h2
             id="advantages-title"
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 tracking-tight flex items-center justify-center gap-2"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-900 tracking-tight flex items-center justify-center gap-2"
           >
             為什麼要選擇康德德語？
           </h2>

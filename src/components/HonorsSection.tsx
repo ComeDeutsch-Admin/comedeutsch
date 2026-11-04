@@ -103,7 +103,7 @@ export const HonorsSection: React.FC = () => {
             </div>
             <h2
               id="honors-heading"
-              className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight"
             >
               榮譽榜・成就不凡的德語實力
             </h2>

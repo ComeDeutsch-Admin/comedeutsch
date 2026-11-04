@@ -29,7 +29,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenLineModal }) => 
         {/* Big Main Title matching Screenshot 1 */}
         <h1
           id="hero-main-title"
-          className="text-[48px] leading-[48px] sm:text-[64px] sm:leading-[64px] md:text-[90px] md:leading-[90px] font-black tracking-tight text-neutral-950 font-sans select-none drop-shadow-xs"
+          className="text-[48px] leading-[48px] sm:text-[64px] sm:leading-[64px] md:text-[90px] md:leading-[90px] font-extrabold tracking-tight text-neutral-950 font-sans select-none drop-shadow-xs"
         >
           康德德語
         </h1>

@@ -45,7 +45,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = () => {
         <div className="text-center max-w-3xl mx-auto mb-14">
           <h2
             id="reviews-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 tracking-tight"
           >
             來看看學員評價！
           </h2>

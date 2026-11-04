@@ -15,7 +15,7 @@ export const TeachersSection: React.FC<TeachersSectionProps> = () => {
         <div className="text-center max-w-3xl mx-auto mb-14">
           <h2
             id="teachers-heading"
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-950 tracking-tight"
           >
             專業師資陣容
           </h2>
@@ -30,7 +30,7 @@ export const TeachersSection: React.FC<TeachersSectionProps> = () => {
 
           return (
             <div key={group} className="mb-12 last:mb-0">
-              <h3 className="text-2xl font-black text-neutral-900 mb-6 pl-3 border-l-4 border-[#e63946]">
+              <h3 className="text-2xl font-extrabold text-neutral-900 mb-6 pl-3 border-l-4 border-[#e63946]">
                 {group}
               </h3>
 
