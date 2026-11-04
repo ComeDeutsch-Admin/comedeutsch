@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Award, Trophy, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const honorsList = [
@@ -65,28 +65,28 @@ const honorsList = [
 ];
 
 const GAP = 24; // 卡片間距(對應 gap-6 = 24px)
+const EDGE = 4; // 判斷是否到頭/到尾的容許誤差(px)
 
 export const HonorsSection: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
 
-  const updateArrows = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanPrev(el.scrollLeft > 4);
-    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-  };
-
-  useEffect(() => {
-    updateArrows();
-    window.addEventListener('resize', updateArrows);
-    return () => window.removeEventListener('resize', updateArrows);
-  }, []);
-
+  // 循環翻頁：到最後再按「下一張」回到第一張；在第一張按「上一張」跳到最後一張
   const scrollByCard = (dir: 1 | -1) => {
     const el = scrollRef.current;
     if (!el) return;
+
+    const atStart = el.scrollLeft <= EDGE;
+    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - EDGE;
+
+    if (dir === 1 && atEnd) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+      return;
+    }
+    if (dir === -1 && atStart) {
+      el.scrollTo({ left: el.scrollWidth - el.clientWidth, behavior: 'smooth' });
+      return;
+    }
+
     const card = el.querySelector<HTMLElement>('[data-card]');
     const step = card ? card.offsetWidth + GAP : el.clientWidth;
     el.scrollBy({ left: dir * step, behavior: 'smooth' });
@@ -113,14 +113,13 @@ export const HonorsSection: React.FC = () => {
           </p>
         </div>
 
-        {/* 左右切換按鈕 */}
+        {/* 左右切換按鈕（循環翻頁，不再停用） */}
         <div className="flex justify-end gap-2 mb-4">
           <button
             type="button"
             aria-label="上一張"
             onClick={() => scrollByCard(-1)}
-            disabled={!canPrev}
-            className="w-10 h-10 rounded-full bg-white border border-[#ffcdcd] flex items-center justify-center text-neutral-700 hover:bg-[#fff8f8] transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            className="w-10 h-10 rounded-full bg-white border border-[#ffcdcd] flex items-center justify-center text-neutral-700 hover:bg-[#fff8f8] transition cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -128,8 +127,7 @@ export const HonorsSection: React.FC = () => {
             type="button"
             aria-label="下一張"
             onClick={() => scrollByCard(1)}
-            disabled={!canNext}
-            className="w-10 h-10 rounded-full bg-white border border-[#ffcdcd] flex items-center justify-center text-neutral-700 hover:bg-[#fff8f8] transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            className="w-10 h-10 rounded-full bg-white border border-[#ffcdcd] flex items-center justify-center text-neutral-700 hover:bg-[#fff8f8] transition cursor-pointer"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -138,7 +136,6 @@ export const HonorsSection: React.FC = () => {
         {/* 可左右滑動的卡片列 */}
         <div
           ref={scrollRef}
-          onScroll={updateArrows}
           className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 pt-1 px-1 -mx-1 scroll-pl-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {honorsList.map((honor, idx) => (
