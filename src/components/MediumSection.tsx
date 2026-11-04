@@ -171,7 +171,7 @@ export const MediumSection: React.FC = () => {
             id="articles-heading"
             className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-950 tracking-tight"
           >
-            德語學習文章
+            ComeDeutsch專欄
           </h2>
         </div>
 
