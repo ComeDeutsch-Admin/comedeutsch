@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // ===== 只需要改這裡 =====
-const MEDIUM_USERNAME = 'your-username'; // 不用加 @，例如 comedeutsch
+const MEDIUM_USERNAME = 'ComeDeutsch'; // 不用加 @，例如 comedeutsch
 const MAX_POSTS = 3; // 最多顯示幾篇
 const PROFILE_NAME = 'comedeutsch'; // 卡片左上角顯示的名稱
 const PROFILE_AVATAR = '/logo.png'; // 頭像圖片路徑，換成你網站上的 logo
