@@ -4,6 +4,7 @@ import { WhyLearnGerman } from './components/WhyLearnGerman';
 import { CoursesSection } from './components/CoursesSection';
 import { AdvantagesSection } from './components/AdvantagesSection';
 import { ReviewsSection } from './components/ReviewsSection';
+import { MediumSection } from './components/MediumSection';
 import { TeachersSection } from './components/TeachersSection';
 import { HonorsSection } from './components/HonorsSection';
 import { ActivitiesSection } from './components/ActivitiesSection';
@@ -45,14 +46,17 @@ export default function App() {
 
         {/* 7. 榮譽榜 */}
         <HonorsSection />
+        
+        {/* 8. Medium專欄 */}
+        <MediumSection />
 
-        {/* 8. 活動集錦 */}
+        {/* 9. 活動集錦 */}
         {SHOW_ACTIVITIES && <ActivitiesSection />}
 
-        {/* 9. 上課規定 */}
+        {/* 10. 上課規定 */}
         <RulesSection />
 
-        {/* 10. 常見問題 */}
+        {/* 11. 常見問題 */}
         <FaqSection onOpenLineModal={() => handleOpenLineModal('a1')} />
       </main>
 
