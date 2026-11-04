@@ -1,7 +1,65 @@
 @import "tailwindcss";
 
+/* 主題色：#E0F8C7（淺綠）、#36415A（深藍灰）
+   英文 Nunito、中文 Chiron GoRound TC */
+@theme {
+  --font-sans: "Nunito", "Chiron GoRound TC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+
+  /* indigo：強調色 */
+  --color-indigo-50:  #F3FCEA;
+  --color-indigo-100: #E0F8C7;
+  --color-indigo-200: #C8EDA5;
+  --color-indigo-300: #9BB08A;
+  --color-indigo-400: #66748F;
+  --color-indigo-500: #4A5878;
+  --color-indigo-600: #36415A;
+  --color-indigo-700: #2B344A;
+  --color-indigo-800: #212839;
+  --color-indigo-900: #181D29;
+  --color-indigo-950: #11141C;
+
+  /* slate：邊框、文字、淺綠底色（搜尋欄等） */
+  --color-slate-50:  #E0F8C7;
+  --color-slate-100: #D3EDB9;
+  --color-slate-200: #BFE0A3;
+  --color-slate-300: #A5C887;
+  --color-slate-400: #8A94AA;
+  --color-slate-500: #66748F;
+  --color-slate-600: #4A5878;
+  --color-slate-700: #36415A;
+  --color-slate-800: #36415A;
+  --color-slate-900: #212839;
+}
+
 @layer base {
-  body {
-    font-family: 'Inter', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+  html, body {
+    @apply bg-white text-slate-800 antialiased selection:bg-indigo-600 selection:text-indigo-100 min-h-screen;
+    font-family: "Nunito", "Chiron GoRound TC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+    font-weight: 300;
+    -webkit-tap-highlight-color: transparent;
   }
+}
+
+/* Light theme smooth scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(224, 248, 199, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(54, 65, 90, 0.35);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(54, 65, 90, 0.6);
+}
+
+/* Safe area padding for mobile standalone PWA */
+.safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 1rem));
 }
