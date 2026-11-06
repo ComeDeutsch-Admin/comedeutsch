@@ -18,7 +18,7 @@ export const TEACHERS_DATA: Teacher[] = [
       '系統化解釋令人畏懼的德語語法，手把手帶領學員用德語的邏輯思考',
     ],
     avatarText: 'Chia-En',
-    avatarUrl: 'teacher1.jpg',
+    avatarUrl: 'teacher1.png',
     accentColor: 'from-amber-500 to-amber-700',
   },
   {
@@ -36,7 +36,7 @@ export const TEACHERS_DATA: Teacher[] = [
       '筆記紮實，學員隨時可以回頭複習',
     ],
     avatarText: 'Frau H',
-    avatarUrl: 'teacher2.jpg',
+    avatarUrl: 'teacher2.png',
     accentColor: 'from-rose-500 to-rose-700',
   },
   {
@@ -53,7 +53,7 @@ export const TEACHERS_DATA: Teacher[] = [
       '學生遇到困難時不直接給答案，而是以引導方式帶領學生自己得到答案。',
     ],
     avatarText: 'Frau C',
-    avatarUrl: 'teacher3.jpg',
+    avatarUrl: 'teacher3.png',
     accentColor: 'from-emerald-600 to-teal-800',
   },
   {
@@ -70,7 +70,7 @@ export const TEACHERS_DATA: Teacher[] = [
       '細心觀察學生的學習情況，特別留意他們所犯的錯誤。每當發現問題時，他會耐心地解釋錯誤的原因，並提供補充知識，幫助學生更深入地理解學習內容。',
     ],
     avatarText: 'Frau Y',
-    avatarUrl: 'teacher4.jpg',
+    avatarUrl: 'teacher4.png',
     accentColor: 'from-blue-600 to-indigo-800',
   },
   {
@@ -88,7 +88,7 @@ export const TEACHERS_DATA: Teacher[] = [
       '特別適合高階的德語學習者',
     ],
     avatarText: 'Herr D',
-    avatarUrl: 'teacher5.jpg',
+    avatarUrl: 'teacher5.png',
     accentColor: 'from-violet-600 to-purple-800',
   },
   {
@@ -106,7 +106,7 @@ export const TEACHERS_DATA: Teacher[] = [
       '特別適合準備高階德語考試的學習者',
     ],
     avatarText: 'Herr F',
-    avatarUrl: 'teacher6.jpg',
+    avatarUrl: 'teacher6.png',
     accentColor: 'from-sky-600 to-cyan-800',
   },
 ];
